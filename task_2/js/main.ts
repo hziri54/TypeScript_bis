@@ -3,7 +3,7 @@ interface DirectorInterface {
     getCoffeeBreak(): string;
     workDirectorTasks(): string;
   }
-
+  
   interface TeacherInterface {
     workFromHome(): string;
     getCoffeeBreak(): string;
@@ -21,7 +21,7 @@ interface DirectorInterface {
       return "Getting to director tasks";
     }
   }
-
+  
   class Teacher implements TeacherInterface {
     workFromHome(): string {
       return "Cannot work from home";
@@ -38,28 +38,18 @@ interface DirectorInterface {
     return typeof salary === "number" && salary < 500 ? new Teacher() : new Director();
   };
 
-  console.log(createEmployee(200) instanceof Teacher);
-  console.log(createEmployee(1000) instanceof Director);
-  console.log(createEmployee("$500") instanceof Director);
+  const isDirector = (employee: Director | Teacher): employee is Director => {
+    return employee instanceof Director;
+  };
 
-  const emp1 = createEmployee(200);
-  console.log(emp1.workFromHome());
-  console.log(emp1.getCoffeeBreak());
+  const executeWork = (employee: Director | Teacher): void => {
+    if (isDirector(employee)) {
+      console.log(employee.workDirectorTasks());
+    } else {
+      console.log(employee.workTeacherTasks());
+    }
+  };
 
-  if (emp1 instanceof Teacher) {
-    console.log(emp1.workTeacherTasks());
-  } else {
-    console.log(emp1.workDirectorTasks());
-  }
-  
-  const emp2 = createEmployee(1000);
-  console.log(emp2.workFromHome());
-  console.log(emp2.getCoffeeBreak());
-  
-
-  if (emp2 instanceof Director) {
-    console.log(emp2.workDirectorTasks());
-  } else {
-    console.log(emp2.workTeacherTasks());
-  }
+  executeWork(createEmployee(200));
+  executeWork(createEmployee(1000));
   
